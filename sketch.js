@@ -1,12 +1,17 @@
 let mic, fft;
 var spectrum;
-
+let filter;
 var w, h;
+
+/* Buscar sensiilidad de sonido para filtrar frequencias bajas y aplificar las altas
+   También revisar lo de el multiplicador logaritmico */
+
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
   noFill();
   colorMode(RGB)
+  filter = new p5.BandPass();
   mic = new p5.AudioIn();
   mic.start();
   fft = new p5.FFT(0.8,64);
@@ -20,8 +25,10 @@ function setup() {
 function draw() {
   background(0);
   spectrum = fft.analyze();
+  // spectrum = fft.logAverages(fft.getOctaveBands());
+  // spectrum = log(spectrum);
   fft.smooth()
-
+  // print(fft.linAverages(32))
   // var amp = spectrum[5];
   // var y = map(amp, 0, 255, 0, 30);
   // fill(amp,0,255-amp)
